@@ -1273,18 +1273,96 @@ s.length <= 40000
 
 ```
 
-# []()
+# [剑指 Offer 49. 丑数](https://leetcode-cn.com/problems/chou-shu-lcof/)
 
-代码：
+我们把只包含质因子 2、3 和 5 的数称作丑数（Ugly Number）。求按从小到大的顺序的第 n 个丑数。
 
-```python3
+ 
 
+示例:
+```
+输入: n = 10
+输出: 12
+解释: 1, 2, 3, 4, 5, 6, 8, 9, 10, 12 是前 10 个丑数。
+```
+说明:  
+```
+1 是丑数。
+n 不超过1690。
 ```
 
-# []()
-
 代码：
 
 ```python3
+class Solution:
+    def nthUglyNumber(self, n: int) -> int:
+        dp = [1] * n
+        i2, i3, i5 = 0, 0, 0
+        for i in range(1, n):
+            v2, v3, v5 = dp[i2] * 2, dp[i3] * 3, dp[i5] * 5
+            dp[i] = min(v2, v3, v5)
+            if dp[i] == v2:
+                i2 += 1
+            if dp[i] == v3:
+                i3 += 1
+            if dp[i] == v5:
+                i5 += 1
+        return dp[-1]
+```
 
+# [剑指 Offer 59 - II. 队列的最大值](https://leetcode-cn.com/problems/dui-lie-de-zui-da-zhi-lcof/)
+
+请定义一个队列并实现函数 max_value 得到队列里的最大值，要求函数max_value、push_back 和 pop_front 的均摊时间复杂度都是O(1)。
+
+若队列为空，pop_front 和 max_value 需要返回 -1
+
+示例 1：
+```
+输入: 
+["MaxQueue","push_back","push_back","max_value","pop_front","max_value"]
+[[],[1],[2],[],[],[]]
+输出: [null,null,null,2,1,2]
+```
+示例 2：
+```
+输入: 
+["MaxQueue","pop_front","max_value"]
+[[],[],[]]
+输出: [null,-1,-1]
+```
+
+限制：
+```
+1 <= push_back,pop_front,max_value的总操作数 <= 10000
+1 <= value <= 10^5
+```
+代码：
+
+```python3
+class MaxQueue:
+
+    def __init__(self):
+        self.q = deque()
+        self.max_q = deque()
+
+    def max_value(self) -> int:
+        if self.max_q:
+            return self.max_q[0]
+        else:
+            return -1
+
+    def push_back(self, value: int) -> None:
+        self.q.append(value)
+        while self.max_q and value > self.max_q[-1]:
+            self.max_q.pop()
+        self.max_q.append(value)
+
+
+    def pop_front(self) -> int:
+        if len(self.max_q) == 0:
+            return -1
+        value = self.q.popleft()
+        if value == self.max_q[0]:
+            self.max_q.popleft()
+        return value
 ```
