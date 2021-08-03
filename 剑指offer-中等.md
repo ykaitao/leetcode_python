@@ -1491,7 +1491,39 @@ class Solution:
 代码：
 
 ```python3
-
+class Solution:
+    def strToInt(self, str: str) -> int:
+        s = len(str)
+        if s == 0:
+            return 0
+        i = 0
+        while i < s and str[i] == " ":
+            i += 1
+        if i == s:
+            return 0
+        h = str[i]
+        sign = 1
+        num = 0
+        is_digit = lambda c: "0" <= c <= "9"
+        int_min = -2147483648
+        int_max = 2147483647
+        if h == "-":
+            sign = -1
+        elif h == "+":
+            pass
+        elif is_digit(h):
+            num = int(h)
+        else:
+            return 0
+        for c in str[i+1:]:
+            if not is_digit(c):
+                return sign * num
+            num = num * 10 + int(c)
+            if sign == 1 and num >= int_max:
+                return int_max
+            if sign == -1 and num >= int_max + 1:
+                return int_min
+        return sign * num
 ```
 
 
@@ -1522,5 +1554,13 @@ class Solution:
 代码：
 
 ```python3
-
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        price_min = +inf
+        profit_max = 0
+        for p in prices:
+            profit_max = max(profit_max, p - price_min)
+            if p < price_min:
+                price_min = p
+        return profit_max
 ```
