@@ -1430,7 +1430,16 @@ class Solution:
 代码：
 
 ```python3
-
+class Solution:
+    def dicesProbability(self, n: int) -> List[float]:
+        prev = [1/6] * 6
+        for i in range(2, n+1):
+            curr = [0] * (5 * i + 1)
+            for j in range(len(prev)):
+                for k in range(6):
+                    curr[j + k] += prev[j] / 6
+            prev = curr
+        return prev
 ```
 
 
