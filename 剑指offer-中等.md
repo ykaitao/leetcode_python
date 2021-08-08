@@ -1270,7 +1270,33 @@ s.length <= 40000
 代码：
 
 ```python3
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        # 方法一：
+        len_max = 0
+        len_prev = 0
+        dic = {}
+        for i in range(len(s)):
+            c = s[i]
+            len_curr = len_prev + 1
+            if c in dic:
+                len_curr = min(i - dic[c], len_curr)
+            len_prev = len_curr
+            len_max = max(len_max, len_curr)
+            dic[c] = i
+        return len_max
 
+        # 方法二：
+        i = -1
+        res = 0
+        dic = {}
+        for j in range(len(s)):
+            c = s[j]
+            if c in dic:
+                i = max(dic[c], i)
+            dic[c] = j
+            res = max(res, j - i)
+        return res
 ```
 
 # [剑指 Offer 49. 丑数](https://leetcode-cn.com/problems/chou-shu-lcof/)
