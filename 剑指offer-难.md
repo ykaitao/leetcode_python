@@ -193,7 +193,46 @@ class MedianFinder:
 代码：
 
 ```python3
+class Codec:
 
+    def serialize(self, root):
+        """Encodes a tree to a single string.
+        
+        :type root: TreeNode
+        :rtype: str
+        """
+        if root is None:
+            return "$,"
+
+        return (
+            f"{root.val}," +
+            self.serialize(root.left) +
+            self.serialize(root.right)
+        )
+        
+
+    def deserialize(self, data):
+        """Decodes your encoded data to tree.
+        
+        :type data: str
+        :rtype: TreeNode
+        """
+        def build_tree() ->TreeNode:
+            val = data_list[self.i]
+            self.i += 1
+            if val != "$":
+                root = TreeNode(val)
+                root.left = build_tree()
+                root.right = build_tree()
+                return root
+            else:
+                return 
+
+        data_list = data.split(",")[:-1]
+        if data_list[0] == "$":
+            return 
+        self.i = 0
+        return build_tree()
 ```
 
 # [剑指 Offer 43. 1～n 整数中 1 出现的次数](https://leetcode-cn.com/problems/1nzheng-shu-zhong-1chu-xian-de-ci-shu-lcof/)
@@ -278,5 +317,19 @@ class MedianFinder:
 代码：
 
 ```python3
+class Solution:
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        stack = []
+        res = []
+        for i, num in enumerate(nums):
+            while stack and nums[stack[-1]] < num:
+                stack.pop()
 
+            while stack and stack[0] <= i - k:
+                stack.pop(0)
+
+            stack.append(i)
+            if i >= (k - 1):
+                res.append(nums[stack[0]])
+        return res
 ```
