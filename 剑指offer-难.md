@@ -263,7 +263,27 @@ class Codec:
 代码：
 
 ```python3
-
+class Solution:
+    def countDigitOne(self, n: int) -> int:
+        nums = str(n)
+        N = len(nums)
+        
+        high = 0
+        low = n
+        digit = 10 ** (N - 1)
+        count = 0
+        for i in range(N):
+            d = int(nums[i])
+            low = low % digit
+            if d == 0:
+                count += high * digit 
+            elif d == 1:
+                count += (low + 1) + high * digit
+            elif d > 1:
+                count += (high + 1) * digit
+            high = high * 10 + d
+            digit = digit // 10
+        return count
 ```
 
 # [剑指 Offer 51. 数组中的逆序对](https://leetcode-cn.com/problems/shu-zu-zhong-de-ni-xu-dui-lcof/)
@@ -286,7 +306,46 @@ class Codec:
 代码：
 
 ```python3
+class Solution:
+    def reversePairs(self, nums: List[int]) -> int:
+        def get_reserse_pair(left: int, right: int) -> int:
+            if left >= right:
+                return 0
+            
+            mid = left + (right - left) // 2
 
+            count_left = get_reserse_pair(left, mid)
+            count_right = get_reserse_pair(mid + 1, right)
+            if nums[mid] <= nums[mid + 1]:
+                return count_left + count_right
+
+            count_merge = merge_and_count(left, mid, right)
+            return count_left + count_right + count_merge
+        
+        def merge_and_count(left: int, mid: int, right: int) -> int:
+            for i in range(left, right + 1):
+                tmp[i] = nums[i]
+            i = left
+            j = mid + 1
+            count = 0
+            for k in range(left, right + 1):
+                if i > mid:
+                    nums[k] = tmp[j]
+                    j += 1
+                elif j > right:
+                    nums[k] = tmp[i]
+                    i += 1
+                elif tmp[i] <= tmp[j]:
+                    nums[k] = tmp[i]
+                    i += 1
+                elif tmp[i] > tmp[j]:
+                    nums[k] = tmp[j]
+                    j += 1
+                    count += (mid - i + 1)
+            return count
+        
+        tmp = list(nums)
+        return get_reserse_pair(0, len(nums) - 1)
 ```
 
 # [剑指 Offer 59 - I. 滑动窗口的最大值](https://leetcode-cn.com/problems/hua-dong-chuang-kou-de-zui-da-zhi-lcof/)
