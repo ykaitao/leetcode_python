@@ -271,14 +271,14 @@ class Solution:
 
 class Solution:
     def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
-        head_curr = head = ListNode()
+        node = head = ListNode()
         while l1 and l2:
             if l1.val <= l2.val:
-                head_curr.next, l1 = ListNode(l1.val), l1.next
+                node.next, l1 = ListNode(l1.val), l1.next
             else:
-                head_curr.next, l2 = ListNode(l2.val), l2.next
+                node.next, l2 = ListNode(l2.val), l2.next
             head_curr = head_curr.next
-        head_curr.next = l1 if l1 else l2
+        node.next = l1 if l1 else l2
         return head.next
 ```
 
