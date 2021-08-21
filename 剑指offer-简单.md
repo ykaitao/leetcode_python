@@ -277,7 +277,7 @@ class Solution:
                 node.next, l1 = ListNode(l1.val), l1.next
             else:
                 node.next, l2 = ListNode(l2.val), l2.next
-            head_curr = head_curr.next
+            node = node.next
         node.next = l1 if l1 else l2
         return head.next
 ```
