@@ -76,7 +76,9 @@ class Solution:
         return dp[m - 1][n - 1]
 
 
-        方法二：
+class Solution:
+    def isMatch(self, s: str, p: str) -> bool:
+        # 方法二：
         def dfs(i: int, j: int) -> bool:
             if (i, j) in self.memo:
                 return self.memo[(i, j)]

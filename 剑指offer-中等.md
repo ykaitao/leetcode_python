@@ -827,39 +827,16 @@ class Solution:
 ```python3
 class Solution:
     def findNthDigit(self, n: int) -> int:
-        # 个位数：1~9, 数字个数9，位数个数9
-        # 两位数：10~99，数字个数90, 位数个数90*2
-        # 三位数：100~999，数字个数900, 位数个数900*3
-        # 四位数：1000~9999，数字个数9000, 位数个数9000*4
-        #...
-        # k位数： 1e(k-1)~1ek-1，数字个数9e(k-1), 位数个数9e(k-1)*k
+        start, digit, count = 1, 1, 9
+        while n > count:
+            n -= count
+            digit += 1
+            start *= 10
+            count = 9 * start * digit
         
-        if n<=9:
-            return n
-        
-        # 位数k，位数k的第i数字，位数k第i个数字的第j位
-        # 位数k
-        k = 1
-        while True:
-            n_digits = 9*10**(k-1)*k
-            
-            if n<=n_digits: break
-            
-            n -= n_digits
-            k += 1
-            
-        # 位数k的第i数字
-        i = n // k
-        num = 10**(k-1) + (i - 1)
+        num = start + (n - 1) // digit
 
-        # 位数k第i个数字的第j位
-        rem = n % k
-        if rem==0:
-            j = -1
-        else:
-            j = rem - 1
-            num += 1
-        return int(str(num)[j])
+        return int(str(num)[(n - 1) % digit])
 ```
 # [剑指 Offer 32 - III. 从上到下打印二叉树 III](https://leetcode-cn.com/problems/cong-shang-dao-xia-da-yin-er-cha-shu-iii-lcof/)
 
