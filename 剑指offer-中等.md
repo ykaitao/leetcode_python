@@ -431,18 +431,18 @@ s 仅含英文字母（大写和小写），数字（0-9），加号 '+' ，减�
 class Solution:
     def isNumber(self, s: str) -> bool:
         valid_chars = set(" +-0123456789eE.")
-        
+
         state_trans = [
-            {" ": 0, "+-": 1, "0123456789":2, ".": 5},  # "0 space start", 
-            {"0123456789": 2, ".": 5},                  # "1 sign", 
-            {"0123456789": 2, "eE": 3, ".": 4, " ": 7}, # "2 digit before .",
-            {"+-": 8, "0123456789": 9},                 # "3 eE",
-            {"0123456789": 6, " ":7, "eE": 3},          # "4 . with left digit",
-            {"0123456789": 6},                          # "5 . without left digit",
-            {"eE": 3, "0123456789": 6, " ": 7},         # "6 digit after .",
-            {" ": 7},                                   # "7 space end",
-            {"0123456789": 9},                          # "8 sign after eE"
-            {"0123456789": 9, " ": 7},                  # "9 digit after eE"
+            {" ": 0, "+-": 2, "0123456789":4, ".": 8},  # "0 space start",
+            {" ": 1},                                   # "1 space end",
+            {"0123456789": 4, ".": 8},                  # "2 sign",
+            {"0123456789": 6},                          # "3 sign after eE",
+            {"0123456789": 4, "eE": 9, ".": 7, " ": 1}, # "4 digit before .",
+            {"eE": 9, "0123456789": 5, " ": 1},         # "5 digit after .",
+            {"0123456789": 6, " ": 1},                  # "6 digit after eE",
+            {"0123456789": 5, " ":1, "eE": 9},          # "7 . with left digit",
+            {"0123456789": 5},                          # "8 . without left digit",
+            {"+-": 3, "0123456789": 6},                 # "9 eE",
         ]
 
         # iterate over string
@@ -459,7 +459,7 @@ class Solution:
                 return False
             curr_state = next_state
 
-        return next_state in [2, 4, 6, 7, 9]
+        return next_state in [1, 4, 5, 6, 7]
 ```
 # [剑指 Offer 16. 数值的整数次方](https://leetcode-cn.com/problems/shu-zhi-de-zheng-shu-ci-fang-lcof/)
 
