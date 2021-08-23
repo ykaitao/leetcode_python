@@ -59,7 +59,7 @@ class Solution:
         # 方法一，动态规划:
         m, n = len(s), len(p)
 
-        # dp[i][j]: is_match from end tail (i, j)
+        # dp[i][j]: is_match from end till (i, j)
         dp = [[False] * (n + 1) for _ in range(m + 1)]
         for i in range(m, -1, -1):
             for j in range(n, -1, -1):
