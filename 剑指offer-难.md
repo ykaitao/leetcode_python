@@ -56,24 +56,22 @@ p 可能为空，且只包含从 a-z 的小写字母以及字符 . 和 *�
 ```python3
 class Solution:
     def isMatch(self, s: str, p: str) -> bool:
-        # 方法一：
-        m, n = len(s) + 1, len(p) + 1
-        dp = [[False] * n for _ in range(m)]
-        for i in range(m):
-            for j in range(n):
-                if j == 0:
-                    dp[i][j] = i == 0
-                else:
-                    if p[j - 1] == "*":
-                        if j >= 2:
-                            dp[i][j] |= dp[i][j - 2]
-                        if  i >= 1 and j >= 2 and (s[i - 1] == p[j - 2] or p[j - 2] == "."):
-                            dp[i][j] |= dp[i - 1][j]
+        # 方法一，动态规划:
+        m, n = len(s), len(p)
 
+        # dp[i][j]: is_match from end tail (i, j)
+        dp = [[False] * (n + 1) for _ in range(m + 1)]
+        for i in range(m, -1, -1):
+            for j in range(n, -1, -1):
+                if j == n:
+                    dp[i][j] = (i == m)
+                else:
+                    first_match = (i < m) and (s[i] == p[j] or p[j] == ".")
+                    if (j + 1) < n and p[j + 1] == "*":
+                        dp[i][j] = (first_match and dp[i + 1][j]) or dp[i][j + 2]
                     else:
-                        if i >= 1 and (s[i - 1] == p[j - 1] or p[j - 1] == "."):
-                            dp[i][j] = dp[i - 1][j - 1]
-        return dp[m - 1][n - 1]
+                        dp[i][j] = first_match and dp[i + 1][j + 1]
+        return dp[0][0]
 
 
 class Solution:
