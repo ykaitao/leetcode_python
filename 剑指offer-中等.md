@@ -1263,6 +1263,8 @@ class Solution:
             dic[c] = i
         return len_max
 
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
         # 方法二：
         i = -1
         res = 0
@@ -1314,6 +1316,7 @@ class Solution:
 ```
 
 # [剑指 Offer 59 - II. 队列的最大值](https://leetcode-cn.com/problems/dui-lie-de-zui-da-zhi-lcof/)
+此题可以对照[剑指offer-30](https://github.com/ykaitao/leetcode_python/blob/master/%E5%89%91%E6%8C%87offer-%E7%AE%80%E5%8D%95.md#%E5%89%91%E6%8C%87-offer-30-%E5%8C%85%E5%90%ABmin%E5%87%BD%E6%95%B0%E7%9A%84%E6%A0%88)学习
 
 请定义一个队列并实现函数 max_value 得到队列里的最大值，要求函数max_value、push_back 和 pop_front 的均摊时间复杂度都是O(1)。
 
