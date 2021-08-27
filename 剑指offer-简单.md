@@ -671,18 +671,32 @@ class Solution:
 ```python3
 class Solution:
     def getLeastNumbers(self, arr: List[int], k: int) -> List[int]:
-        heap_max = []
+        # 解法一：
+        heap_max = [-arr[i] for i in range(k)]
         heapify(heap_max)
-        for i in range(len(arr)):
-            heappush(heap_max, -arr[i])
-            if i < k:
-                continue
-            else:
-                heappop(heap_max)
+        
+        for num in arr[k:]:
+            heappush(heap_max, -num)
+            heappop(heap_max)
+
+        return [-heappop(heap_max) for _ in range(k)]
+
+
+class Solution:
+    def getLeastNumbers(self, arr: List[int], k: int) -> List[int]:
+        # 解法二：
+        count_arr = [0] * 10001
+        for n in arr:
+            count_arr[n] += 1
+
         res = []
-        while heap_max:
-            res.append(-heappop(heap_max))
-        return res
+        for i, c in enumerate(count_arr):
+            if len(res) >= k:
+                break
+            
+            if c > 0:
+                res.extend([i] * c)
+        return res[:k]
 ```
 
 # [剑指 Offer 30. 包含min函数的栈](https://leetcode-cn.com/problems/bao-han-minhan-shu-de-zhan-lcof/)
