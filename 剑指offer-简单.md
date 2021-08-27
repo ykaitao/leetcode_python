@@ -106,10 +106,12 @@ class Solution:
 ```python3
 class Solution:
     def findRepeatNumber(self, nums: List[int]) -> int:
-        nums.sort()
+            
         for i in range(len(nums)):
-            if nums[i] == nums[i + 1]:
+            nums[nums[i]], nums[i] = nums[i], nums[nums[i]]
+            if i != nums[i] and nums[i] == nums[nums[i]]:
                 return nums[i]
+        return None
 ```
 
 # [剑指 Offer 10- II. 青蛙跳台阶问题](https://leetcode-cn.com/problems/qing-wa-tiao-tai-jie-wen-ti-lcof/)
@@ -168,7 +170,7 @@ class Solution:
 class Solution:
     def minArray(self, numbers: List[int]) -> int:
         i, j = 0, len(numbers) - 1
-        while i < j:
+        while i <= j:
             m = i + (j - i) // 2
             if numbers[m] > numbers[j]:
                 i = m + 1
@@ -478,11 +480,21 @@ class Solution:
 ```python3
 class Solution:
     def hammingWeight(self, n: int) -> int:
+        # 解法一
         count = 0
         while n:
             count += n & 1
             n >>= 1
         return count
+
+class Solution:
+    def hammingWeight(self, n: int) -> int:
+        # 解法二：
+        c = 0
+        while n > 0:
+            n = n & (n - 1)
+            c += 1
+        return c
 ```
 
 # [剑指 Offer 29. 顺时针打印矩阵](https://leetcode-cn.com/problems/shun-shi-zhen-da-yin-ju-zhen-lcof/)
@@ -543,10 +555,7 @@ n 为正整数
 ```python3
 class Solution:
     def printNumbers(self, n: int) -> List[int]:
-        res = []
-        for x in range(1, 10 ** n):
-            res.append(x)
-        return res
+        return [x for x in range(1, 10 ** n)]
 ```
 
 # [剑指 Offer 24. 反转链表](https://leetcode-cn.com/problems/fan-zhuan-lian-biao-lcof/)
@@ -662,14 +671,22 @@ class Solution:
 ```python3
 class Solution:
     def getLeastNumbers(self, arr: List[int], k: int) -> List[int]:
-        heapify(arr)
+        heap_max = []
+        heapify(heap_max)
+        for i in range(len(arr)):
+            heappush(heap_max, -arr[i])
+            if i < k:
+                continue
+            else:
+                heappop(heap_max)
         res = []
-        for i in range(k):
-            res.append(heappop(arr))
+        while heap_max:
+            res.append(-heappop(heap_max))
         return res
 ```
 
 # [剑指 Offer 30. 包含min函数的栈](https://leetcode-cn.com/problems/bao-han-minhan-shu-de-zhan-lcof/)
+此题可对比[剑指offer-59](https://github.com/ykaitao/leetcode_python/blob/master/%E5%89%91%E6%8C%87offer-%E4%B8%AD%E7%AD%89.md#%E5%89%91%E6%8C%87-offer-59---ii-%E9%98%9F%E5%88%97%E7%9A%84%E6%9C%80%E5%A4%A7%E5%80%BC)学习
 
 定义栈的数据结构，请在该类型中实现一个能够得到栈的最小元素的 min 函数在该栈中，调用 min、push 及 pop 的时间复杂度都是 O(1)。
 
