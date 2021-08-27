@@ -106,8 +106,6 @@ class Solution:
 ```python3
 class Solution:
     def findRepeatNumber(self, nums: List[int]) -> int:
-        if not nums:
-            return None
             
         for i in range(len(nums)):
             nums[nums[i]], nums[i] = nums[i], nums[nums[i]]
