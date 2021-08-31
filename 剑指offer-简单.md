@@ -871,7 +871,8 @@ class Solution:
         res = []
         while q:
             tmp = []
-            for _ in range(len(q)):
+            n = len(q)
+            for _ in range(n):
                 node = q.popleft()
                 if node:
                     tmp.append(node.val)
