@@ -907,7 +907,7 @@ s = ""
 class Solution:
     def firstUniqChar(self, s: str) -> str:
         tmp = collections.Counter(s)
-        for _, c in enumerate(s):
+        for c in s:
             if tmp[c] == 1:
                 return c
         return " "
