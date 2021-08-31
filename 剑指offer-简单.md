@@ -790,92 +790,452 @@ class Solution:
         return max(nums)
 ```
 
-# []()
+# [剑指 Offer 39. 数组中出现次数超过一半的数字](https://leetcode-cn.com/problems/shu-zu-zhong-chu-xian-ci-shu-chao-guo-yi-ban-de-shu-zi-lcof/)
 
+数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。
+
+ 
+
+你可以假设数组是非空的，并且给定的数组总是存在多数元素。
+
+ 
+
+示例 1:
+```
+输入: [1, 2, 3, 2, 2, 2, 5, 4, 2]
+输出: 2
+```
+
+限制：
+```
+1 <= 数组长度 <= 50000
+```
+
+代码：
+```python3
+class Solution:
+    def majorityElement(self, nums: List[int]) -> int:
+        count = 0
+        for num in nums:
+            if count == 0:
+                x = num
+            count += 1 if x == num else -1
+        return x
+```
+
+# [剑指 Offer 32 - II. 从上到下打印二叉树 II](https://leetcode-cn.com/problems/cong-shang-dao-xia-da-yin-er-cha-shu-ii-lcof/)
+
+从上到下按层打印二叉树，同一层的节点按从左到右的顺序打印，每一层打印到一行。
+
+ 
+
+例如:
+给定二叉树: [3,9,20,null,null,15,7],
+```
+    3
+   / \
+  9  20
+    /  \
+   15   7
+```
+返回其层次遍历结果：
+```
+[
+  [3],
+  [9,20],
+  [15,7]
+]
+```
+
+提示：
+```
+节点总数 <= 1000
+```
+
+代码：
+```python3
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def levelOrder(self, root: TreeNode) -> List[List[int]]:
+        if root is None:
+            return []
+        
+        q = deque()
+        q.append(root)
+        res = []
+        while q:
+            tmp = []
+            n = len(q)
+            for _ in range(n):
+                node = q.popleft()
+                if node:
+                    tmp.append(node.val)
+                if node.left:
+                    q.append(node.left)
+                if node.right:
+                    q.append(node.right)
+            res.append(tmp)
+        return res
+```
+
+# [剑指 Offer 50. 第一个只出现一次的字符](https://leetcode-cn.com/problems/di-yi-ge-zhi-chu-xian-yi-ci-de-zi-fu-lcof/)
+
+在字符串 s 中找出第一个只出现一次的字符。如果没有，返回一个单空格。 s 只包含小写字母。
+
+示例:
+```
+s = "abaccdeff"
+返回 "b"
+
+s = "" 
+返回 " "
+```
+
+限制：
+```
+0 <= s 的长度 <= 50000
+```
+
+代码：
+```python3
+class Solution:
+    def firstUniqChar(self, s: str) -> str:
+        tmp = collections.Counter(s)
+        for c in s:
+            if tmp[c] == 1:
+                return c
+        return " "
+```
+
+# [剑指 Offer 55 - I. 二叉树的深度](https://leetcode-cn.com/problems/er-cha-shu-de-shen-du-lcof/)
+
+输入一棵二叉树的根节点，求该树的深度。从根节点到叶节点依次经过的节点（含根、叶节点）形成树的一条路径，最长路径的长度为树的深度。
+
+例如：
+
+给定二叉树 [3,9,20,null,null,15,7]，
+```
+    3
+   / \
+  9  20
+    /  \
+   15   7
+```
+返回它的最大深度 3 。
+
+ 
+
+提示：
+```
+节点总数 <= 10000
+```
+
+代码：
+```python3
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def maxDepth(self, root: TreeNode) -> int:
+        if root is None:
+            return 0
+        return max(
+            self.maxDepth(root.left),
+            self.maxDepth(root.right)
+        ) + 1
+```
+
+# [剑指 Offer 57. 和为s的两个数字](https://leetcode-cn.com/problems/he-wei-sde-liang-ge-shu-zi-lcof/)
+
+输入一个递增排序的数组和一个数字s，在数组中查找两个数，使得它们的和正好是s。如果有多对数字的和等于s，则输出任意一对即可。
+
+ 
+
+示例 1：
+```
+输入：nums = [2,7,11,15], target = 9
+输出：[2,7] 或者 [7,2]
+```
+示例 2：
+```
+输入：nums = [10,26,30,31,47,60], target = 40
+输出：[10,30] 或者 [30,10]
+```
+
+限制：
+```
+1 <= nums.length <= 10^5
+1 <= nums[i] <= 10^6
+```
+
+代码：
+```python3
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        i, j = 0, len(nums) - 1
+        while i < j:
+            sumij = nums[i] + nums[j]
+            if sumij == target:
+                return [nums[i], nums[j]]
+            elif sumij < target:
+                i += 1
+            else:
+                j -= 1
+        return []
+```
+
+# [剑指 Offer 57 - II. 和为s的连续正数序列](https://leetcode-cn.com/problems/he-wei-sde-lian-xu-zheng-shu-xu-lie-lcof/)
+
+输入一个正整数 target ，输出所有和为 target 的连续正整数序列（至少含有两个数）。
+
+序列内的数字由小到大排列，不同序列按照首个数字从小到大排列。
+
+ 
+
+示例 1：
+```
+输入：target = 9
+输出：[[2,3,4],[4,5]]
+```
+示例 2：
+```
+输入：target = 15
+输出：[[1,2,3,4,5],[4,5,6],[7,8]]
+```
+
+限制：
+```
+1 <= target <= 10^5
+```
 
 代码：
 ```python3
 
 ```
 
-# []()
+# [剑指 Offer 52. 两个链表的第一个公共节点](https://leetcode-cn.com/problems/liang-ge-lian-biao-de-di-yi-ge-gong-gong-jie-dian-lcof/)
 
+输入两个链表，找出它们的第一个公共节点。
+
+如下面的两个链表：
+<img src=https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/14/160_statement.png width="700">
+
+
+在节点 c1 开始相交。
+
+ 
+
+示例 1：
+
+<img src=https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/14/160_example_1.png width="700">
+```
+输入：intersectVal = 8, listA = [4,1,8,4,5], listB = [5,0,1,8,4,5], skipA = 2, skipB = 3
+输出：Reference of the node with value = 8
+输入解释：相交节点的值为 8 （注意，如果两个列表相交则不能为 0）。从各自的表头开始算起，链表 A 为 [4,1,8,4,5]，链表 B 为 [5,0,1,8,4,5]。在 A 中，相交节点前有 2 个节点；在 B 中，相交节点前有 3 个节点。
+```
+
+示例 2：
+
+<img src=https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/14/160_example_2.png width="700">
+```
+输入：intersectVal = 2, listA = [0,9,1,2,4], listB = [3,2,4], skipA = 3, skipB = 1
+输出：Reference of the node with value = 2
+输入解释：相交节点的值为 2 （注意，如果两个列表相交则不能为 0）。从各自的表头开始算起，链表 A 为 [0,9,1,2,4]，链表 B 为 [3,2,4]。在 A 中，相交节点前有 3 个节点；在 B 中，相交节点前有 1 个节点。
+```
+
+示例 3：
+
+<img src=https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/14/160_example_3.png width="700">
+```
+输入：intersectVal = 0, listA = [2,6,4], listB = [1,5], skipA = 3, skipB = 2
+输出：null
+输入解释：从各自的表头开始算起，链表 A 为 [2,6,4]，链表 B 为 [1,5]。由于这两个链表不相交，所以 intersectVal 必须为 0，而 skipA 和 skipB 可以是任意值。
+解释：这两个链表不相交，因此返回 null。
+```
+
+注意：
+```
+如果两个链表没有交点，返回 null.
+在返回结果后，两个链表仍须保持原有的结构。
+可假定整个链表结构中没有循环。
+程序尽量满足 O(n) 时间复杂度，且仅用 O(1) 内存。
+```
 
 代码：
 ```python3
 
 ```
 
-# []()
+# [剑指 Offer 58 - I. 翻转单词顺序](https://leetcode-cn.com/problems/fan-zhuan-dan-ci-shun-xu-lcof/)
 
+输入一个英文句子，翻转句子中单词的顺序，但单词内字符的顺序不变。为简单起见，标点符号和普通字母一样处理。例如输入字符串"I am a student. "，则输出"student. a am I"。
+
+ 
+
+示例 1：
+```
+输入: "the sky is blue"
+输出: "blue is sky the"
+```
+示例 2：
+```
+输入: "  hello world!  "
+输出: "world! hello"
+解释: 输入字符串可以在前面或者后面包含多余的空格，但是反转后的字符不能包括。
+```
+示例 3：
+```
+输入: "a good   example"
+输出: "example good a"
+解释: 如果两个单词间有多余的空格，将反转后单词间的空格减少到只含一个。
+```
+
+说明：
+```
+无空格字符构成一个单词。
+输入字符串可以在前面或者后面包含多余的空格，但是反转后的字符不能包括。
+如果两个单词间有多余的空格，将反转后单词间的空格减少到只含一个。
+```
 
 代码：
 ```python3
 
 ```
 
-# []()
+# [剑指 Offer 53 - I. 在排序数组中查找数字 I](https://leetcode-cn.com/problems/zai-pai-xu-shu-zu-zhong-cha-zhao-shu-zi-lcof/)
 
+统计一个数字在排序数组中出现的次数。
+
+ 
+
+示例 1:
+```
+输入: nums = [5,7,7,8,8,10], target = 8
+输出: 2
+```
+示例 2:
+```
+输入: nums = [5,7,7,8,8,10], target = 6
+输出: 0
+```
+
+提示：
+```
+0 <= nums.length <= 105
+-109 <= nums[i] <= 109
+nums 是一个非递减数组
+-109 <= target <= 109
+```
+
+代码：
+```python3
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        # 解法一：找左边界
+        left, right = 0, len(nums) - 1
+        while left <= right:
+            m = left + (right - left) // 2
+            if nums[m]>= target:
+                right = m - 1
+            else:
+                left = m + 1
+
+        count = 0
+        while left < len(nums) and nums[left] == target:
+            count += 1
+            left += 1
+        return count
+
+
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        # 解法二：找右边界
+        left, right = 0, len(nums) - 1
+        while left <= right:
+            m = left + (right - left) // 2
+            if nums[m]<= target:
+                left = m + 1
+            else:
+                right = m - 1
+
+        count = 0
+        while -1 < right and nums[right] == target:
+            count += 1
+            right -= 1
+        return count
+```
+
+# [剑指 Offer 58 - II. 左旋转字符串](https://leetcode-cn.com/problems/zuo-xuan-zhuan-zi-fu-chuan-lcof/)
+
+字符串的左旋转操作是把字符串前面的若干个字符转移到字符串的尾部。请定义一个函数实现字符串左旋转操作的功能。比如，输入字符串"abcdefg"和数字2，该函数将返回左旋转两位得到的结果"cdefgab"。
+
+ 
+
+示例 1：
+```
+输入: s = "abcdefg", k = 2
+输出: "cdefgab"
+```
+示例 2：
+```
+输入: s = "lrloseumgh", k = 6
+输出: "umghlrlose"
+```
+
+限制：
+```
+1 <= k < s.length <= 10000
+```
 
 代码：
 ```python3
 
 ```
 
-# []()
+# [剑指 Offer 53 - II. 0～n-1中缺失的数字](https://leetcode-cn.com/problems/que-shi-de-shu-zi-lcof/)
 
+一个长度为n-1的递增排序数组中的所有数字都是唯一的，并且每个数字都在范围0～n-1之内。在范围0～n-1内的n个数字中有且只有一个数字不在该数组中，请找出这个数字。
 
-代码：
-```python3
+ 
 
+示例 1:
+```
+输入: [0,1,3]
+输出: 2
+```
+示例 2:
+```
+输入: [0,1,2,3,4,5,6,7,9]
+输出: 8
 ```
 
-# []()
-
-
-代码：
-```python3
-
+限制：
+```
+1 <= 数组长度 <= 10000
 ```
 
-# []()
-
-
 代码：
 ```python3
-
-```
-
-# []()
-
-
-代码：
-```python3
-
-```
-
-# []()
-
-
-代码：
-```python3
-
-```
-
-# []()
-
-
-代码：
-```python3
-
-```
-
-# []()
-
-
-代码：
-```python3
-
+class Solution:
+    def missingNumber(self, nums: List[int]) -> int:
+        i, j = 0, len(nums) - 1
+        while i <= j:
+            m = i + (j - i) // 2
+            if nums[m] == m:
+                i = m + 1
+            else:
+                j = m - 1
+        return i
 ```
 
 # []()
