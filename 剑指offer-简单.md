@@ -947,12 +947,34 @@ class Solution:
 
 class Solution:
     def maxDepth(self, root: TreeNode) -> int:
+        # 深度优先：
         if root is None:
             return 0
         return max(
             self.maxDepth(root.left),
             self.maxDepth(root.right)
         ) + 1
+
+
+
+class Solution:
+    def maxDepth(self, root: TreeNode) -> int:
+        # 广度优先：  
+        if root is None:
+            return 0      
+        count = 0
+        q = deque()
+        q.append(root)
+        while q:
+            n = len(q)
+            for i in range(n):
+                node = q.popleft()
+                if node.left:
+                    q.append(node.left)
+                if node.right:
+                    q.append(node.right)
+            count += 1
+        return count
 ```
 
 # [剑指 Offer 57. 和为s的两个数字](https://leetcode-cn.com/problems/he-wei-sde-liang-ge-shu-zi-lcof/)
