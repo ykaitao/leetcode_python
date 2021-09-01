@@ -906,10 +906,24 @@ s = ""
 ```python3
 class Solution:
     def firstUniqChar(self, s: str) -> str:
+        # 方法一：
         tmp = collections.Counter(s)
         for c in s:
             if tmp[c] == 1:
                 return c
+        return " "
+
+
+class Solution:
+    def firstUniqChar(self, s: str) -> str:
+        # 方法二：
+        dic = OrderedDict()
+        for c in s:
+            dic[c] = 1 + (dic[c] if c in dic else 0)
+        
+        for k, v in dic.items():
+            if v == 1:
+                return k
         return " "
 ```
 
