@@ -378,17 +378,17 @@ class Solution:
 ```python3
 class Solution:
     def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
-        stack = []
+        q = deque()
         res = []
         for i, num in enumerate(nums):
-            while stack and nums[stack[-1]] < num:
-                stack.pop()
+            while q and nums[q[-1]] < num:
+                q.pop()
+            q.append(i)
 
-            while stack and stack[0] <= i - k:
-                stack.pop(0)
+            while q and i - q[0] >= k:
+                q.popleft()
 
-            stack.append(i)
             if i >= (k - 1):
-                res.append(nums[stack[0]])
+                res.append(nums[q[0]])
         return res
 ```
