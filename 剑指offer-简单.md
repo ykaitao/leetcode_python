@@ -585,15 +585,15 @@ class Solution:
 
 class Solution:
     def reverseList(self, head: ListNode) -> ListNode:
-        res_head = None
-        curr = tmp = head
-        
-        while curr:
-            tmp = tmp.next
-            curr.next = res_head
-            res_head = curr
-            curr = tmp
-        return res_head
+        node_prev = None
+        node_curr = head
+
+        while node_curr:
+            node_next = node_curr.next
+            node_curr.next = node_prev
+            node_prev, node_curr = node_curr, node_next
+            
+        return node_prev
 ```
 
 # [剑指 Offer 18. 删除链表的节点](https://leetcode-cn.com/problems/shan-chu-lian-biao-de-jie-dian-lcof/)
@@ -1056,7 +1056,24 @@ class Solution:
 
 代码：
 ```python3
-
+class Solution:
+    def findContinuousSequence(self, target: int) -> List[List[int]]:
+        i, j = 1, 1
+        sumi_j = 0
+        res = []
+        start_max = target // 2
+        while i <= start_max:
+            if sumi_j > target:
+                sumi_j -= i
+                i += 1
+            elif sumi_j < target:
+                sumi_j += j
+                j += 1
+            else:
+                res.append([x for x in range(i, j)])
+                sumi_j = sumi_j - i
+                i += 1
+        return res
 ```
 
 # [剑指 Offer 52. 两个链表的第一个公共节点](https://leetcode-cn.com/problems/liang-ge-lian-biao-de-di-yi-ge-gong-gong-jie-dian-lcof/)
@@ -1109,7 +1126,21 @@ class Solution:
 
 代码：
 ```python3
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
 
+class Solution:
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
+        nodeA = headA
+        nodeB = headB
+
+        while nodeA != nodeB:
+                nodeA = nodeA.next if nodeA else headB
+                nodeB = nodeB.next if nodeB else headA
+        return nodeA
 ```
 
 # [剑指 Offer 58 - I. 翻转单词顺序](https://leetcode-cn.com/problems/fan-zhuan-dan-ci-shun-xu-lcof/)
@@ -1145,6 +1176,18 @@ class Solution:
 
 代码：
 ```python3
+class Solution:
+    def reverseWords(self, s: str) -> str:
+        s = s.strip(" ")
+        n = len(s)
+        res = []
+        i = j = n - 1
+        while i >= 0:
+            while i >= 0 and s[i] != " ": i -= 1
+            res.append(s[i + 1:j + 1])
+            while i >= 0 and s[i] == " ": i -= 1
+            j = i
+        return " ".join(res)
 
 ```
 
@@ -1235,7 +1278,14 @@ class Solution:
 
 代码：
 ```python3
+class Solution:
+    def reverseLeftWords(self, s: str, n: int) -> str:
+        # return s[n:] + s[:n]
 
+        res = ""
+        for i in range(n, n + len(s)):
+            res += s[i % len(s)]
+        return res
 ```
 
 # [剑指 Offer 53 - II. 0～n-1中缺失的数字](https://leetcode-cn.com/problems/que-shi-de-shu-zi-lcof/)
