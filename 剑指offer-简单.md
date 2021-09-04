@@ -1189,6 +1189,11 @@ class Solution:
             j = i
         return " ".join(res)
 
+
+class Solution:
+    def reverseWords(self, s: str) -> str:
+        # 解法二：
+        return " ".join(s.split()[::-1])
 ```
 
 # [剑指 Offer 53 - I. 在排序数组中查找数字 I](https://leetcode-cn.com/problems/zai-pai-xu-shu-zu-zhong-cha-zhao-shu-zi-lcof/)
@@ -1324,106 +1329,314 @@ class Solution:
         return i
 ```
 
-# []()
+# [剑指 Offer 54. 二叉搜索树的第k大节点](https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-di-kda-jie-dian-lcof/)
 
+给定一棵二叉搜索树，请找出其中第k大的节点。
+
+ 
+
+示例 1:
+```
+输入: root = [3,1,4,null,2], k = 1
+   3
+  / \
+ 1   4
+  \
+   2
+输出: 4
+```
+示例 2:
+```
+输入: root = [5,3,6,2,4,null,null,1], k = 3
+       5
+      / \
+     3   6
+    / \
+   2   4
+  /
+ 1
+输出: 4
+```
+
+限制：
+```
+1 ≤ k ≤ 二叉搜索树元素个数
+```
 
 代码：
 ```python3
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
 
+class Solution:
+    def kthLargest(self, root: TreeNode, k: int) -> int:
+        def dfs(root: TreeNode) -> None:
+            if root is None:
+                return None
+            dfs(root.right)
+            if self.k == 0:
+                return
+            self.k -= 1
+            if self.k == 0:
+                self.res = root.val
+            dfs(root.left)
+
+        self.k = k
+        self.res = None
+        dfs(root)
+        return self.res
 ```
 
-# []()
+# [剑指 Offer 65. 不用加减乘除做加法](https://leetcode-cn.com/problems/bu-yong-jia-jian-cheng-chu-zuo-jia-fa-lcof/)
 
+写一个函数，求两个整数之和，要求在函数体内不得使用 “+”、“-”、“*”、“/” 四则运算符号。
+
+ 
+
+示例:
+```
+输入: a = 1, b = 1
+输出: 2
+```
+
+提示：
+```
+a, b 均可能是负数或 0
+结果不会溢出 32 位整数
+```
 
 代码：
 ```python3
-
+class Solution:
+    def add(self, a: int, b: int) -> int:
+        x = 0xffffffff
+        a, b = a & x, b & x
+        while b != 0:
+            a, b = (a ^ b), (a & b) << 1 & x
+        return a if a <= 0x7fffffff else ~(a & x)
 ```
 
-# []()
+# [剑指 Offer 61. 扑克牌中的顺子](https://leetcode-cn.com/problems/bu-ke-pai-zhong-de-shun-zi-lcof/)
 
+从扑克牌中随机抽5张牌，判断是不是一个顺子，即这5张牌是不是连续的。2～10为数字本身，A为1，J为11，Q为12，K为13，而大、小王为 0 ，可以看成任意数字。A 不能视为 14。
+
+ 
+
+示例 1:
+```
+输入: [1,2,3,4,5]
+输出: True
+```
+
+示例 2:
+```
+输入: [0,0,1,2,5]
+输出: True
+```
+
+限制：
+```
+数组长度为 5 
+
+数组的数取值为 [0, 13] .
+```
 
 代码：
 ```python3
-
+class Solution:
+    def isStraight(self, nums: List[int]) -> bool:
+        k = 0
+        nums.sort()
+        for i in range(4):
+            if nums[i] == 0:
+                k += 1
+            elif nums[i] == nums[i + 1]:
+                return False
+        return nums[4] - nums[k] < 5
 ```
 
-# []()
+# [剑指 Offer 55 - II. 平衡二叉树](https://leetcode-cn.com/problems/ping-heng-er-cha-shu-lcof/)
 
+输入一棵二叉树的根节点，判断该树是不是平衡二叉树。如果某二叉树中任意节点的左右子树的深度相差不超过1，那么它就是一棵平衡二叉树。
+
+ 
+
+示例 1:
+```
+给定二叉树 [3,9,20,null,null,15,7]
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+返回 true 。
+```
+示例 2:
+```
+给定二叉树 [1,2,2,3,3,null,null,4,4]
+
+       1
+      / \
+     2   2
+    / \
+   3   3
+  / \
+ 4   4
+返回 false 。
+```
+ 
+
+限制：
+```
+0 <= 树的结点个数 <= 10000
+```
 
 代码：
 ```python3
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
 
+class Solution:
+    def isBalanced(self, root: TreeNode) -> bool:
+        # 解法一：
+        def recur(root: TreeNode) -> int:
+            if root is None:
+                return 0
+            
+            depleft = recur(root.left)
+            if depleft == -1:
+                return -1
+
+            depright = recur(root.right)
+            if depright == -1:
+                return -1
+            return max(depleft, depright) + 1 if abs(depleft - depright) <= 1 else -1
+        
+        return recur(root) != -1
+
+
+class Solution:
+    def isBalanced(self, root: TreeNode) -> bool:
+        # 解法二：
+        if root is None:
+            return True
+        
+        return abs(self.depth(root.left) - self.depth(root.right)) <= 1 and \
+                self.isBalanced(root.left) and self.isBalanced(root.right)
+
+    def depth(self, root: TreeNode) -> int:
+        if root is None:
+            return 0
+        return max(self.depth(root.left), self.depth(root.right)) + 1
 ```
 
-# []()
+# [剑指 Offer 62. 圆圈中最后剩下的数字](https://leetcode-cn.com/problems/yuan-quan-zhong-zui-hou-sheng-xia-de-shu-zi-lcof/)
 
+0,1,···,n-1这n个数字排成一个圆圈，从数字0开始，每次从这个圆圈里删除第m个数字（删除后从下一个数字开始计数）。求出这个圆圈里剩下的最后一个数字。
+
+例如，0、1、2、3、4这5个数字组成一个圆圈，从数字0开始每次删除第3个数字，则删除的前4个数字依次是2、0、4、1，因此最后剩下的数字是3。
+
+ 
+
+示例 1：
+```
+输入: n = 5, m = 3
+输出: 3
+```
+示例 2：
+```
+输入: n = 10, m = 17
+输出: 2
+```
+
+限制：
+```
+1 <= n <= 10^5
+1 <= m <= 10^6
+```
 
 代码：
 ```python3
-
+class Solution:
+    def lastRemaining(self, n: int, m: int) -> int:
+        ans = 0
+        for i in range(2, n + 1):
+            ans = (ans + m) % i
+        return ans
 ```
 
-# []()
+# [剑指 Offer 68 - I. 二叉搜索树的最近公共祖先](https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-zui-jin-gong-gong-zu-xian-lcof/)
 
+给定一个二叉搜索树, 找到该树中两个指定节点的最近公共祖先。
+
+百度百科中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”
+
+例如，给定如下二叉搜索树:  root = [6,2,8,0,4,7,9,null,null,3,5]
+
+ <img src=https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2018/12/14/binarysearchtree_improved.png width="700">
+
+示例 1:
+```
+输入: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 8
+输出: 6 
+解释: 节点 2 和节点 8 的最近公共祖先是 6。
+```
+示例 2:
+```
+输入: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 4
+输出: 2
+解释: 节点 2 和节点 4 的最近公共祖先是 2, 因为根据定义最近公共祖先节点可以为节点本身。
+```
+
+说明:
+```
+所有节点的值都是唯一的。
+p、q 为不同节点且均存在于给定的二叉搜索树中。
+```
 
 代码：
-```python3
+```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
 
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        # 迭代：
+        if p.val > q.val: p, q = q, p
+        while root:
+            if root.val < p.val:
+                root = root.right
+            elif root.val > q.val:
+                root = root.left
+            else:
+                break
+        return root
+
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        # 递归：
+        if root.val < p.val and root.val < q.val:
+            return self.lowestCommonAncestor(root.right, p, q)
+        
+        elif root.val > p.val and root.val > q.val:
+            return self.lowestCommonAncestor(root.left, p, q)
+
+        else:
+            return root
 ```
 
-# []()
-
-
-代码：
-```python3
-
-```
-
-# []()
-
-
-代码：
-```python3
-
-```
-
-# []()
-
-
-代码：
-```python3
-
-```
-
-# []()
-
-
-代码：
-```python3
-
-```
-
-# []()
-
-
-代码：
-```python3
-
-```
-
-# []()
-
-
-代码：
-```python3
-
-```
-
-# []()
-
-
-代码：
-```python3
-
-```
+# [剑指 Offer 68 - II. 二叉树的最近公共祖先](https://leetcode-cn.com/problems/er-cha-shu-de-zui-jin-gong-gong-zu-xian-lcof/)
+此题详情与解法请见[腾讯精选练习50题236](https://github.com/ykaitao/leetcode_python/blob/master/%E8%85%BE%E8%AE%AF%E7%B2%BE%E9%80%89%E7%BB%83%E4%B9%A050%E9%A2%98-%E4%B8%AD%E7%AD%89.md#236-%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88)
