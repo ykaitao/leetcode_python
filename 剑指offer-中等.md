@@ -463,7 +463,7 @@ class Solution:
 ```
 # [剑指 Offer 16. 数值的整数次方](https://leetcode-cn.com/problems/shu-zhi-de-zheng-shu-ci-fang-lcof/)
 
-实现 `pow(x, n)` ，即计算 x 的 n 次幂函数（即，xn）。不得使用库函数，同时不需要考虑大数问题。
+实现 `pow(x, n)` ，即计算 x 的 n 次幂函数（即，$x^{n}$）。不得使用库函数，同时不需要考虑大数问题。
 
  
 
@@ -488,7 +488,7 @@ class Solution:
 ```
 -100.0 < x < 100.0
 -231 <= n <= 231-1
--104 <= xn <= 104
+-104 <= x**n <= 104
 ```
 代码：
 
