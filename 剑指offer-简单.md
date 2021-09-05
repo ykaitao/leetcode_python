@@ -396,14 +396,14 @@ class Solution:
 
 class Solution:
     def isSymmetric(self, root: TreeNode) -> bool:
-        def recur(left: TreeNode, right: TreeNode) -> bool:
+        def is_mirror(left: TreeNode, right: TreeNode) -> bool:
             if left is None and right is None:
                 return True
             if left is None or right is None or left.val != right.val:
                 return False
-            return recur(left.left, right.right) and recur(left.right, right.left)
+            return is_mirror(left.left, right.right) and is_mirror(left.right, right.left)
 
-        return recur(root.left, root.right) if root else True
+        return is_mirror(root.left, root.right) if root else True
 ```
 
 # [剑指 Offer 21. 调整数组顺序使奇数位于偶数前面](https://leetcode-cn.com/problems/diao-zheng-shu-zu-shun-xu-shi-qi-shu-wei-yu-ou-shu-qian-mian-lcof/)
@@ -788,6 +788,16 @@ class Solution:
         for i in range(1, len(nums)):
             nums[i] += max(nums[i - 1], 0)
         return max(nums)
+
+
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        # 不改变原数组：
+        ans = curr = nums[0]
+        for v in nums[1:]:
+            curr = v + max(0, curr)
+            ans = max(ans, curr)
+        return ans
 ```
 
 # [剑指 Offer 39. 数组中出现次数超过一半的数字](https://leetcode-cn.com/problems/shu-zu-zhong-chu-xian-ci-shu-chao-guo-yi-ban-de-shu-zi-lcof/)
