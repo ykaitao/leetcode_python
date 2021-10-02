@@ -1235,38 +1235,30 @@ nums 是一个非递减数组
 ```python3
 class Solution:
     def search(self, nums: List[int], target: int) -> int:
-        # 解法一：找左边界
-        left, right = 0, len(nums) - 1
-        while left <= right:
-            m = left + (right - left) // 2
-            if nums[m]>= target:
-                right = m - 1
-            else:
-                left = m + 1
 
-        count = 0
-        while left < len(nums) and nums[left] == target:
-            count += 1
-            left += 1
-        return count
+        def searchSide(side: str) -> int:
+            left, right = 0, n - 1
+            while left <= right:
+                m = left + (right - left) // 2
+                if nums[m] < target:
+                    left = m + 1
+                elif nums[m] > target:
+                    right = m - 1
+                else:
+                    if side == "left":
+                        right = m - 1
+                    else:
+                        left = m + 1
+            return left if side == "left" else right
 
-
-class Solution:
-    def search(self, nums: List[int], target: int) -> int:
-        # 解法二：找右边界
-        left, right = 0, len(nums) - 1
-        while left <= right:
-            m = left + (right - left) // 2
-            if nums[m]<= target:
-                left = m + 1
-            else:
-                right = m - 1
-
-        count = 0
-        while -1 < right and nums[right] == target:
-            count += 1
-            right -= 1
-        return count
+        n = len(nums)
+        left = searchSide("left")
+        if left >= n or nums[left] != target:
+            return 0
+        else:
+            right = searchSide("right")
+            
+        return right - left + 1
 ```
 
 # [剑指 Offer 58 - II. 左旋转字符串](https://leetcode-cn.com/problems/zuo-xuan-zhuan-zi-fu-chuan-lcof/)
